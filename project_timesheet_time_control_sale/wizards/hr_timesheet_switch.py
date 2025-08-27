@@ -26,12 +26,4 @@ class HrTimesheetSwitch(models.TransientModel):
                 ("timesheet_invoice_id", "=", False),  # include only uninvoiced lines
             ]
         )
-        if len(running) > 1:
-            raise UserError(
-                _(
-                    "%d running timers found. Cannot know which one to stop. "
-                    "Please stop them manually."
-                )
-                % len(running)
-            )
-        return running
+        return running if len(running) > 0 else self.env["account.analytic.line"]
